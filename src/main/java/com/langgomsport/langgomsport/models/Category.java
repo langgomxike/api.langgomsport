@@ -12,7 +12,7 @@ public class Category {
     private int id;
 
     private String name;
-    private int parent_id;
+    private int parentId;
 
     //getter and setter
     public int getId() {
@@ -29,12 +29,11 @@ public class Category {
         this.name = name;
     }
 
-    public int getParent_id() {
-        return parent_id;
+    public int getParentId() {
+        return parentId;
     }
-    public void setParent_id(int parent_id) {
-        this.parent_id = parent_id;
+    public void setParentId(int parent_id) {
+        this.parentId = parent_id;
     }
 
-    //constructor
 }
