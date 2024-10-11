@@ -2,6 +2,9 @@ package com.langgomsport.langgomsport.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name="categories")
 public class Category {
@@ -14,10 +17,10 @@ public class Category {
     private String name;
     private int parentId;
 
-    //getter and setter
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -25,6 +28,7 @@ public class Category {
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -32,8 +36,15 @@ public class Category {
     public int getParentId() {
         return parentId;
     }
-    public void setParentId(int parent_id) {
-        this.parentId = parent_id;
+
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
     }
+
+    //relationships
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
+    private List<Product> products = new ArrayList<>();
+
+
 
 }
