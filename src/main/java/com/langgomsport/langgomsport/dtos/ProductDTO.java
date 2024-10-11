@@ -1,32 +1,36 @@
 package com.langgomsport.langgomsport.dtos;
 
-import com.langgomsport.langgomsport.models.Pagination;
+import com.langgomsport.langgomsport.models.File;
 import com.langgomsport.langgomsport.models.Product;
 
 import java.util.List;
 
 public class ProductDTO {
     //properties
-    private List<Product> products;
-    private Pagination pagination;
+    private Product product;
+    private List<File> files;
+    //getter and setter
+    public Product getProduct() {
+        return product;
+    }
 
-    //getter & setter
-    public List<Product> getProducts() {
-        return products;
+    public void setProduct(Product product) {
+        this.product = product;
     }
-    public void setProducts(List<Product> products) {
-        this.products = products;
+
+    public List<File> getFiles() {
+        return files;
     }
-    public Pagination getPagination() {
-        return pagination;
-    }
-    public void setPagination(Pagination pagination) {
-        this.pagination = pagination;
+
+    public void setFiles(List<File> files) {
+        this.files = files;
     }
 
     //constructor
-    public ProductDTO(List<Product> products, Pagination pagination) {
-        this.products = products;
-        this.pagination = pagination;
+
+    public ProductDTO(Product product, List<File> files) {
+        this.product = product;
+        this.files = files;
     }
+    public ProductDTO() {}
 }

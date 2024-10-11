@@ -181,4 +181,15 @@ public class ProductService {
 
     }
 
+    public List<File> getProductFiles(Product product) {
+        StringBuilder sql = new StringBuilder("select f.* from files f " +
+            "LEFT JOIN variant_file vf ON vf.file_id = f.id " +
+            "LEFT JOIN variants v ON vf.variant_id = v.id " +
+            "LEFT JOIN products p ON p.id = v.product_id " +
+            "WHERE p.id = :productId ");
+        Query query = em.createNativeQuery(sql.toString(), File.class);
+        query.setParameter("productId", product.getId());
+        return (List<File>) query.getResultList();
+    }
+
 }
