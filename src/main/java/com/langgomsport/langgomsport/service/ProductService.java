@@ -32,8 +32,8 @@ public class ProductService {
 
     public List<Product> getAllProducts(
             Integer categoryId,
-            Integer sizeId,
-            Integer brandId,
+            List<Integer> sizeIds,
+            List<Integer> brandIds,
             BigDecimal minPrice,
             BigDecimal maxPrice,
             Boolean sort,
@@ -57,11 +57,11 @@ public class ProductService {
             sql.append("AND c.id = :categoryId ");
         }
         //kiem tra size
-        if (sizeId != null) {
-            sql.append("AND s.id = :sizeId ");
+        if (sizeIds != null) {
+            sql.append("AND s.id IN (:sizeId) ");
         }
-        if (brandId != null) {
-            sql.append("AND b.id = :brandId ");
+        if (brandIds != null) {
+            sql.append("AND b.id IN (:brandId) ");
         }
         if (minPrice != null) {
             sql.append("AND p.price >= :minPrice ");
@@ -84,11 +84,11 @@ public class ProductService {
         if (categoryId != null) {
             query.setParameter("categoryId", categoryId);
         }
-        if (sizeId != null) {
-            query.setParameter("sizeId", sizeId);
+        if (sizeIds != null) {
+            query.setParameter("sizeId", sizeIds); //mang size
         }
-        if (brandId != null) {
-            query.setParameter("brandId", brandId);
+        if (brandIds != null) {
+            query.setParameter("brandId", brandIds); // mang brand
         }
         if (minPrice != null) {
             query.setParameter("minPrice", minPrice);
@@ -105,8 +105,8 @@ public class ProductService {
 
     public Pagination getPagination(
             Integer categoryId,
-            Integer sizeId,
-            Integer brandId,
+            List<Integer> sizeIds,
+            List<Integer> brandIds,
             BigDecimal minPrice,
             BigDecimal maxPrice,
             Boolean sort,
@@ -130,11 +130,11 @@ public class ProductService {
         if (categoryId != null) {
             sql.append("AND c.id = :categoryId ");
         }
-        if (sizeId != null) {
-            sql.append("AND s.id = :sizeId ");
+        if (sizeIds != null) {
+            sql.append("AND s.id IN (:sizeId) ");
         }
-        if (brandId != null) {
-            sql.append("AND b.id = :brandId ");
+        if (brandIds != null) {
+            sql.append("AND b.id IN (:brandId) ");
         }
         if (minPrice != null) {
             sql.append("AND p.price >= :minPrice ");
@@ -157,11 +157,11 @@ public class ProductService {
         if (categoryId != null) {
             countQuery.setParameter("categoryId", categoryId);
         }
-        if (sizeId != null) {
-            countQuery.setParameter("sizeId", sizeId);
+        if (sizeIds != null) {
+            countQuery.setParameter("sizeId", sizeIds);
         }
-        if (brandId != null) {
-            countQuery.setParameter("brandId", brandId);
+        if (brandIds != null) {
+            countQuery.setParameter("brandId", brandIds);
         }
         if (minPrice != null) {
             countQuery.setParameter("minPrice", minPrice);
@@ -179,6 +179,17 @@ public class ProductService {
         Pagination pagination = new Pagination(page, perPage, totalPages, totalItems.intValue());
         return pagination;
 
+    }
+
+    public List<File> getProductFiles(Product product) {
+        StringBuilder sql = new StringBuilder("select f.* from files f " +
+            "LEFT JOIN variant_file vf ON vf.file_id = f.id " +
+            "LEFT JOIN variants v ON vf.variant_id = v.id " +
+            "LEFT JOIN products p ON p.id = v.product_id " +
+            "WHERE p.id = :productId ");
+        Query query = em.createNativeQuery(sql.toString(), File.class);
+        query.setParameter("productId", product.getId());
+        return (List<File>) query.getResultList();
     }
 
 }

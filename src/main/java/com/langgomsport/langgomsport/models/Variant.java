@@ -2,6 +2,8 @@ package com.langgomsport.langgomsport.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "variants")
 public class Variant {
@@ -24,4 +26,14 @@ public class Variant {
     @ManyToOne
     @JoinColumn(name = "size_id", nullable = false)
     private Size size;
+
+    @ManyToMany
+    @JoinTable(
+            name = "variant_file",
+            joinColumns = @JoinColumn(name = "variant_id"),
+            inverseJoinColumns = @JoinColumn(name = "file_id")
+    )
+    private List<File> files;
+
+
 }

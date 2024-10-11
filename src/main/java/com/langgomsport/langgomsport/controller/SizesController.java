@@ -4,10 +4,7 @@ import com.langgomsport.langgomsport.models.Product;
 import com.langgomsport.langgomsport.models.Size;
 import com.langgomsport.langgomsport.service.SizeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,8 +15,15 @@ public class SizesController {
     @Autowired
     private SizeService sizeService;
 
+//    @GetMapping
+//    public List<Size> getAllSizes() {
+//        return sizeService.getAllSizes();
+//    }
+
     @GetMapping
-    public List<Size> getAllSizes() {
-        return sizeService.getAllSizes();
+    public List<Size> getAllSizes(
+            @RequestParam(required = false) Integer categoryId
+    ){
+        return sizeService.getSizebyCategories(categoryId);
     }
 }
