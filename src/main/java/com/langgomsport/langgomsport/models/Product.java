@@ -12,7 +12,10 @@ public class Product {
     private String name;
     private String description;
     private double price;
-    private int brand_id;
+
+    @Column(name = "brand_id")
+    private int brandId;
+
     private long created_at;
     private long updated_at;
 
@@ -48,12 +51,12 @@ public class Product {
         this.price = price;
     }
 
-    public int getBrand_id() {
-        return brand_id;
+    public int getBrandId() {
+        return brandId;
     }
 
-    public void setBrand_id(int brand_id) {
-        this.brand_id = brand_id;
+    public void setBrandId(int brandId) {
+        this.brandId = brandId;
     }
 
     public long getCreated_at() {
