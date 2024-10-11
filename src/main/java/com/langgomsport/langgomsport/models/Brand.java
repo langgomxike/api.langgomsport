@@ -2,19 +2,22 @@ package com.langgomsport.langgomsport.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "brands")
 public class Brand {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public int id;
-    public String name;
+    private int id;
 
-    // GET SET
+    private String name;
+
+    //getter and setter
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
@@ -22,16 +25,11 @@ public class Brand {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
 
-    public Brand(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public Brand() {
-    }
+    //relationships
+    @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY)
+    private List<Product> products;
 }
