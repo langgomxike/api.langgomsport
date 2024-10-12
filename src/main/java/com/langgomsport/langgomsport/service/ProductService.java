@@ -16,4 +16,8 @@ public class ProductService {
     public List<Product> getAllProducts(){
         return productService.findAll();
     }
+
+    public List<Product> getProductsByPriceRange(Double minPrice, Double maxPrice) {
+        return productService.findByPriceBetween(minPrice, maxPrice);
+    }
 }
