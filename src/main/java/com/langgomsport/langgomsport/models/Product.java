@@ -16,7 +16,7 @@ public class Product {
     private String name;
     private String description;
     private BigDecimal price;
-//    private int brand_id;
+    private BigDecimal discount;
     private long created_at;
     private long updated_at;
 
@@ -63,9 +63,16 @@ public class Product {
     public long getUpdated_at() {
         return updated_at;
     }
-
     public void setUpdated_at(long updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public BigDecimal getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(BigDecimal discount) {
+        this.discount = discount;
     }
 
     //relationship
@@ -85,4 +92,28 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "brand_id", nullable = false)
     private Brand brand;
+
+    public List<Variant> getVariants() {
+        return variants;
+    }
+
+    public void setVariants(List<Variant> variants) {
+        this.variants = variants;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+
+    public Brand getBrand() {
+        return brand;
+    }
+
+    public void setBrand(Brand brand) {
+        this.brand = brand;
+    }
 }
