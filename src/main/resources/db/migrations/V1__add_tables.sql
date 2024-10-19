@@ -61,7 +61,8 @@ CREATE TABLE `products`
 (
     `id`          int(11) NOT NULL AUTO_INCREMENT,
     `name`        varchar(255) DEFAULT NULL,
-    `price` double DEFAULT NULL,
+    `price`       decimal DEFAULT NULL,
+    `discount`    decimal DEFAULT 0,
     `description` longtext     DEFAULT NULL,
     `brand_id`    int(11) DEFAULT NULL,
     `created_at`  bigint(20) DEFAULT NULL,
@@ -121,3 +122,7 @@ CREATE TABLE `variant_file`
     `file_id`    int(11) NOT NULL,
     PRIMARY KEY (`variant_id`, `file_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+
+

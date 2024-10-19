@@ -1,6 +1,7 @@
 package com.langgomsport.langgomsport.service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.langgomsport.langgomsport.models.*;
@@ -36,7 +37,7 @@ public class ProductService {
             List<Integer> brandIds,
             BigDecimal minPrice,
             BigDecimal maxPrice,
-            Boolean sort,
+            String sort,
             int offset,
             int limit
     ){
@@ -70,13 +71,19 @@ public class ProductService {
             sql.append("AND p.price <= :maxPrice ");
         }
 
-        // Thêm điều kiện sắp xếp
-        sql.append("ORDER BY ");
-        if (sort) {
-            sql.append("p.price ASC ");
-        } else {
-            sql.append("p.price DESC ");
+        // Thêm sắp xếp dựa trên enum Sort
+        Sort sort1 = Sort.fromString(sort);
+        // bo qua cac discount = 0
+        if(sort1.getSortBy().equals("discount")){
+            sql.append("AND p.discount > 0 ");
         }
+        //sap xep
+        sql.append("ORDER BY ")
+                .append(sort1.getSortBy())
+                .append(" ")
+                .append(sort1.getSortType())
+                .append(" ");
+
         // them phan trang
         sql.append("LIMIT :limit OFFSET :offset");
         Query query = em.createNativeQuery(sql.toString(), Product.class);
@@ -109,7 +116,7 @@ public class ProductService {
             List<Integer> brandIds,
             BigDecimal minPrice,
             BigDecimal maxPrice,
-            Boolean sort,
+            String sort,
             int page,
             int perPage
     ){
@@ -143,13 +150,19 @@ public class ProductService {
             sql.append("AND p.price <= :maxPrice ");
         }
 
-        // Thêm điều kiện sắp xếp
-        sql.append("ORDER BY ");
-        if (sort) {
-            sql.append("p.price ASC ");
-        } else {
-            sql.append("p.price DESC ");
+        // Thêm sắp xếp dựa trên enum Sort
+        Sort sort1 = Sort.fromString(sort);
+        // bo qua cac discount = 0
+        if(sort1.getSortBy().equals("discount")){
+            sql.append("AND p.discount > 0 ");
         }
+        //sap xep
+        sql.append("ORDER BY ")
+                .append(sort1.getSortBy())
+                .append(" ")
+                .append(sort1.getSortType())
+                .append(" ");
+
 
         //tao cau truy van
         Query countQuery = em.createNativeQuery(sql.toString());
@@ -190,6 +203,21 @@ public class ProductService {
         Query query = em.createNativeQuery(sql.toString(), File.class);
         query.setParameter("productId", product.getId());
         return (List<File>) query.getResultList();
+    }
+
+    public Product getProductById(int id){
+        if(id <= 0){
+            return null;
+        }
+        return  productService.findById(id);
+    }
+
+    public List<Product> getRelatedProducts(List<Category> categories){
+        List<Integer> categoryIds = new ArrayList<Integer>();
+        for (Category category : categories) {
+            categoryIds.add(category.getId());
+        }
+        return productService.findAllByCategories_Id(categoryIds);
     }
 
 }
