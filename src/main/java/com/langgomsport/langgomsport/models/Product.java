@@ -1,7 +1,7 @@
 package com.langgomsport.langgomsport.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -17,8 +17,8 @@ public class Product {
     private String description;
     private BigDecimal price;
     private BigDecimal discount;
-    private long created_at;
-    private long updated_at;
+    private long createdAt;
+    private long updatedAt;
 
     public int getId() {
         return id;
@@ -52,19 +52,19 @@ public class Product {
         this.price = price;
     }
 
-    public long getCreated_at() {
-        return created_at;
+    public long getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(long created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(long created_at) {
+        this.createdAt = created_at;
     }
 
-    public long getUpdated_at() {
-        return updated_at;
+    public long getUpdatedAt() {
+        return updatedAt;
     }
-    public void setUpdated_at(long updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdatedAt(long updated_at) {
+        this.updatedAt = updated_at;
     }
 
     public BigDecimal getDiscount() {
@@ -78,6 +78,7 @@ public class Product {
     //relationship
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    @JsonIgnore
     private List<Variant> variants;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -86,7 +87,6 @@ public class Product {
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
-
     private List<Category> categories;
 
     @ManyToOne

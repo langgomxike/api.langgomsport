@@ -1,10 +1,12 @@
 package com.langgomsport.langgomsport.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "files")
@@ -69,6 +71,15 @@ public class File {
     }
 
     @ManyToMany(mappedBy = "files", fetch = FetchType.LAZY)
-    private List<Variant> variants = new ArrayList<>();
+    @JsonIgnore
+    private Set<Variant> variants = new HashSet<>();
 
+
+    public Set<Variant> getVariants() {
+        return variants;
+    }
+
+    public void setVariants(Set<Variant> variants) {
+        this.variants = variants;
+    }
 }

@@ -13,7 +13,10 @@ import java.util.List;
 public interface  ProductRepository extends JpaRepository<Product, Integer>{
     List<Product> findByBrandId(int brandId);
     Product findById(int id);
-    @Query("SELECT p FROM Product p JOIN p.categories c WHERE c.id IN :categoryIds")
+    @Query("SELECT distinct p " +
+            "FROM Product p " +
+            "JOIN p.categories c " +
+            "WHERE c.id IN :categoryIds")
     List<Product> findAllByCategories_Id(@Param("categoryIds") List<Integer> categoryIds);
 
 }
