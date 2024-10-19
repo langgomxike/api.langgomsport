@@ -1,6 +1,10 @@
 package com.langgomsport.langgomsport.models;
 
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -11,8 +15,8 @@ public class Product {
 
     private String name;
     private String description;
-    private double price;
-    private int brand_id;
+    private BigDecimal price;
+//    private int brand_id;
     private long created_at;
     private long updated_at;
 
@@ -40,20 +44,12 @@ public class Product {
         this.description = description;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    public int getBrand_id() {
-        return brand_id;
-    }
-
-    public void setBrand_id(int brand_id) {
-        this.brand_id = brand_id;
     }
 
     public long getCreated_at() {
@@ -72,6 +68,21 @@ public class Product {
         this.updated_at = updated_at;
     }
 
+    //relationship
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Variant> variants;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "products_in_categories", // Bảng trung gian
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+
+    private List<Category> categories;
+
+    @ManyToOne
+    @JoinColumn(name = "brand_id", nullable = false)
+    private Brand brand;
 }

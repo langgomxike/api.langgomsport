@@ -7,7 +7,6 @@ import com.langgomsport.langgomsport.models.Product;
 import java.util.List;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Integer> {
-    // Thêm phương thức để lọc theo giá
-    List<Product> findByPriceBetween(Double minPrice, Double maxPrice);
+public interface  ProductRepository extends JpaRepository<Product, Integer>{
+    List<Product> findByBrandId(int brandId);
 }
