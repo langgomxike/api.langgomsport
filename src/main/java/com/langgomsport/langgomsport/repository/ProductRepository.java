@@ -19,4 +19,5 @@ public interface  ProductRepository extends JpaRepository<Product, Integer>{
             "WHERE c.id IN :categoryIds")
     List<Product> findAllByCategories_Id(@Param("categoryIds") List<Integer> categoryIds);
 
+//    List<Product> getAll()
 }

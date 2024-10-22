@@ -16,18 +16,12 @@ import com.langgomsport.langgomsport.repository.ProductRepository;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
-public class ProductService {
+public class    ProductService {
     private static final Log log = LogFactory.getLog(ProductService.class);
     @Autowired
     private ProductRepository productService;
     @Autowired
     private EntityManager em ;
-
-//    //Get all product
-//    public List<Product> getAllProducts(){
-//        return productService.findAll();
-//    }
-
 
     //get All product with native query
 
