@@ -40,14 +40,10 @@ public class ProductsController {
         List<ProductDTO> productDTOS = new ArrayList<>();
 //        Sort sort1 = Sort.fromString(sort);
         List<Product> products =  productService.getAllProducts(categoryId, sizeIds, brandIds, minPrice, maxPrice, sort ,offset, perPage );
-        for (Product product : products) {
-            List<File> files = productService.getProductFiles(product);
-            ProductDTO productDTO = new ProductDTO(product, files);
-            productDTOS.add(productDTO);
-        }
+        
         Pagination pagination = productService.getPagination(categoryId, sizeIds, brandIds, minPrice, maxPrice, sort, page, perPage);
 
-        return new GetAllProductDTO(productDTOS, pagination);
+        return new GetAllProductDTO(products, pagination);
     }
 
     @GetMapping("/detail")
@@ -55,9 +51,8 @@ public class ProductsController {
             @RequestParam Integer id
     ){
         Product product = productService.getProductById(id);
-        List<Product> relatedProducts = new ArrayList<>();
         List<Category> categories =  product.getCategories();
-        relatedProducts = productService.getRelatedProducts(categories);
+        List<Product> relatedProducts = productService.getRelatedProducts(categories);
 
         return new ResponseProductDetail(product, relatedProducts);
     }

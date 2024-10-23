@@ -7,14 +7,14 @@ import java.util.List;
 
 public class GetAllProductDTO {
     //properties
-    private List<ProductDTO> products;
+    private List<Product> products;
     private Pagination pagination;
 
     //getter & setter
-    public List<ProductDTO> getProducts() {
+    public List<Product> getProducts() {
         return products;
     }
-    public void setProducts(List<ProductDTO> products) {
+    public void setProducts(List<Product> products) {
         this.products = products;
     }
     public Pagination getPagination() {
@@ -25,7 +25,7 @@ public class GetAllProductDTO {
     }
 
     //constructor
-    public GetAllProductDTO(List<ProductDTO> products, Pagination pagination) {
+    public GetAllProductDTO(List<Product> products, Pagination pagination) {
         this.products = products;
         this.pagination = pagination;
     }
