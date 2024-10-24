@@ -28,7 +28,7 @@ public class    ProductService {
 
     public List<Product> getAllProducts(Integer categoryId, List<Integer> sizeIds, List<Integer> brandIds, BigDecimal minPrice, BigDecimal maxPrice, String sort, int offset, int limit
     ){
-        StringBuilder sql = new StringBuilder("SELECT p.* FROM products p " +
+        StringBuilder sql = new StringBuilder("SELECT DISTINCT p.* FROM products p " +
                 "LEFT JOIN variants v ON p.id = v.product_id " +
                 "LEFT JOIN sizes s ON v.size_id = s.id " +
                 "LEFT JOIN brands b ON p.brand_id = b.id ");
@@ -102,7 +102,7 @@ public class    ProductService {
         int offset = (page - 1) * perPage;
 
         // Tính tổng số sản phẩm co bo loc để tính totalPages
-        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM products p " +
+        StringBuilder sql = new StringBuilder("SELECT COUNT(DISTINCT p.id) FROM products p " +
                 "LEFT JOIN variants v ON p.id = v.product_id " +
                 "LEFT JOIN sizes s ON v.size_id = s.id " +
                 "LEFT JOIN brands b ON p.brand_id = b.id ");
