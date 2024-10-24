@@ -77,17 +77,9 @@ public class File {
         this.updatedAt = updatedAt;
     }
 
-//    @ManyToMany(mappedBy = "files", fetch = FetchType.LAZY)
-//    @JsonIgnore
-//    private Set<Variant> variants = new HashSet<>();
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "files", fetch = FetchType.LAZY)
 //    @JsonBackReference
     @JsonIgnore
-    @JoinTable(
-            name = "product_file",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "file_id")
-    )
     private List<Product> products;
 
 //    public List<Product> getProduct() {

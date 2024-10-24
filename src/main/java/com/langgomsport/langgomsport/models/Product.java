@@ -42,7 +42,12 @@ public class Product {
     @JoinColumn(name = "brand_id", nullable = false)
     private Brand brand;
 
-    @ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "product_file",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "file_id")
+    )
     private List<File> files ;
 
 //getter and setter

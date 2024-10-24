@@ -12,10 +12,25 @@ public class Variant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     private int quantity;
     private long created_at;
     private long updated_at;
+
+
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    @JsonIgnore
+    private Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "color_id", nullable = false)
+    private Color color;
+
+    @ManyToOne
+    @JoinColumn(name = "size_id", nullable = false)
+    private Size size;
+
+    //getter and setter
 
     public int getId() {
         return id;
@@ -59,18 +74,15 @@ public class Variant {
         this.color = color;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    @JsonIgnore
-    private Product product;
+    public Size getSize() {
+        return size;
+    }
 
-    @ManyToOne
-    @JoinColumn(name = "color_id", nullable = false)
-    private Color color;
+    public void setSize(Size size) {
+        this.size = size;
+    }
 
-    @ManyToOne
-    @JoinColumn(name = "size_id", nullable = false)
-    private Size size;
+    //constructor
 
     public Variant(int id, int quantity, long created_at, long updated_at, Product product, Color color, Size size) {
         this.id = id;
