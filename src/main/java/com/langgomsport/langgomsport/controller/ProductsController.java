@@ -40,7 +40,7 @@ public class ProductsController {
         List<ProductDTO> productDTOS = new ArrayList<>();
 //        Sort sort1 = Sort.fromString(sort);
         List<Product> products =  productService.getAllProducts(categoryId, sizeIds, brandIds, minPrice, maxPrice, sort ,offset, perPage );
-        
+
         Pagination pagination = productService.getPagination(categoryId, sizeIds, brandIds, minPrice, maxPrice, sort, page, perPage);
 
         return new GetAllProductDTO(products, pagination);
@@ -52,7 +52,7 @@ public class ProductsController {
     ){
         Product product = productService.getProductById(id);
         List<Category> categories =  product.getCategories();
-        List<Product> relatedProducts = productService.getRelatedProducts(categories);
+        List<Product> relatedProducts = productService.getRelatedProducts(categories, id);
 
         return new ResponseProductDetail(product, relatedProducts);
     }

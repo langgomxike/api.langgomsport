@@ -59,20 +59,6 @@ public class Variant {
         this.color = color;
     }
 
-    public Size getSize() {
-        return size;
-    }
-    public void setSize(Size size) {
-        this.size = size;
-    }
-
-    public Set<File> getFiles() {
-        return files;
-    }
-    public void setFiles(Set<File> files) {
-        this.files = files;
-    }
-
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     @JsonIgnore
@@ -86,17 +72,7 @@ public class Variant {
     @JoinColumn(name = "size_id", nullable = false)
     private Size size;
 
-    @ManyToMany
-    @JoinTable(
-            name = "variant_file",
-            joinColumns = @JoinColumn(name = "variant_id"),
-            inverseJoinColumns = @JoinColumn(name = "file_id")
-    )
-//    @JsonIgnore
-    private Set<File> files;
-
-
-    public Variant(int id, int quantity, long created_at, long updated_at, Product product, Color color, Size size, Set<File> files) {
+    public Variant(int id, int quantity, long created_at, long updated_at, Product product, Color color, Size size) {
         this.id = id;
         this.quantity = quantity;
         this.created_at = created_at;
@@ -104,7 +80,6 @@ public class Variant {
         this.product = product;
         this.color = color;
         this.size = size;
-        this.files = files;
     }
 
     public Variant() {

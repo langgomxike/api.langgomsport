@@ -3,6 +3,7 @@ package com.langgomsport.langgomsport.service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.langgomsport.langgomsport.models.*;
 import jakarta.persistence.EntityManager;
@@ -25,15 +26,7 @@ public class    ProductService {
 
     //get All product with native query
 
-    public List<Product> getAllProducts(
-            Integer categoryId,
-            List<Integer> sizeIds,
-            List<Integer> brandIds,
-            BigDecimal minPrice,
-            BigDecimal maxPrice,
-            String sort,
-            int offset,
-            int limit
+    public List<Product> getAllProducts(Integer categoryId, List<Integer> sizeIds, List<Integer> brandIds, BigDecimal minPrice, BigDecimal maxPrice, String sort, int offset, int limit
     ){
         StringBuilder sql = new StringBuilder("SELECT p.* FROM products p " +
                 "LEFT JOIN variants v ON p.id = v.product_id " +
@@ -104,15 +97,7 @@ public class    ProductService {
         return (List<Product>) query.getResultList();
     }
 
-    public Pagination getPagination(
-            Integer categoryId,
-            List<Integer> sizeIds,
-            List<Integer> brandIds,
-            BigDecimal minPrice,
-            BigDecimal maxPrice,
-            String sort,
-            int page,
-            int perPage
+    public Pagination getPagination(Integer categoryId, List<Integer> sizeIds, List<Integer> brandIds, BigDecimal minPrice, BigDecimal maxPrice, String sort, int page, int perPage
     ){
         int offset = (page - 1) * perPage;
 
@@ -188,17 +173,6 @@ public class    ProductService {
 
     }
 
-    public List<File> getProductFiles(Product product) {
-        StringBuilder sql = new StringBuilder("select f.* from files f " +
-            "LEFT JOIN variant_file vf ON vf.file_id = f.id " +
-            "LEFT JOIN variants v ON vf.variant_id = v.id " +
-            "LEFT JOIN products p ON p.id = v.product_id " +
-            "WHERE p.id = :productId ");
-        Query query = em.createNativeQuery(sql.toString(), File.class);
-        query.setParameter("productId", product.getId());
-        return (List<File>) query.getResultList();
-    }
-
     public Product getProductById(int id){
         if(id <= 0){
             return null;
@@ -206,12 +180,15 @@ public class    ProductService {
         return  productService.findById(id);
     }
 
-    public List<Product> getRelatedProducts(List<Category> categories){
-        List<Integer> categoryIds = new ArrayList<Integer>();
-        for (Category category : categories) {
-            categoryIds.add(category.getId());
-        }
-        return productService.findAllByCategories_Id(categoryIds);
+    public List<Product> getRelatedProducts(List<Category> categories, int currentProductId){
+        // Chuyển đổi List<Category> thành List<Integer> (danh sách ID của Category)
+        List<Integer> categoryIds = categories.stream()
+                .map(Category::getId)
+                .collect(Collectors.toList());
+
+        // Gọi phương thức trong repository với danh sách categoryIds
+        return productService.findRelatedProducts(categoryIds, currentProductId);
     }
+
 
 }
