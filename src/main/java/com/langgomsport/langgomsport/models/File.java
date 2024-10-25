@@ -1,6 +1,9 @@
 package com.langgomsport.langgomsport.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -10,6 +13,10 @@ import java.util.Set;
 
 @Entity
 @Table(name = "files")
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id"
+//)
 public class File {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -71,15 +78,15 @@ public class File {
     }
 
     @ManyToMany(mappedBy = "files", fetch = FetchType.LAZY)
+//    @JsonBackReference
     @JsonIgnore
-    private Set<Variant> variants = new HashSet<>();
+    private List<Product> products;
 
-
-    public Set<Variant> getVariants() {
-        return variants;
-    }
-
-    public void setVariants(Set<Variant> variants) {
-        this.variants = variants;
-    }
+//    public List<Product> getProduct() {
+//        return products;
+//    }
+//
+//    public void setProduct(List<Product> products) {
+//        this.products = products;
+//    }
 }

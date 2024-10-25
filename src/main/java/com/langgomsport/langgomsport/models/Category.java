@@ -1,6 +1,7 @@
 package com.langgomsport.langgomsport.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -17,8 +18,9 @@ public class Category {
 
     private String name;
     @ManyToOne
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JoinColumn(name = "parent_id")
-    @JsonIgnore// ánh xạ với cột parent_id trong cơ sở dữ liệu
+//    @JsonIgnore// ánh xạ với cột parent_id trong cơ sở dữ liệu
     private Category parent;
 
     //relationships
@@ -45,7 +47,10 @@ public class Category {
     }
 
     public Category getParent() {
-        return parent;
+        if (this.parent != null && this.parent.getId() != 0) {
+            return this.parent;
+        }
+        return null;  // Trả về null nếu parent_id = 0
     }
 
     public void setParent(Category parent) {
