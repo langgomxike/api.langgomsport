@@ -1,7 +1,6 @@
 package com.langgomsport.langgomsport.service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,13 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.langgomsport.langgomsport.repository.ProductRepository;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
 public class    ProductService {
     private static final Log log = LogFactory.getLog(ProductService.class);
     @Autowired
-    private ProductRepository productService;
+    private ProductRepository productRepository;
     @Autowired
     private EntityManager em ;
 
@@ -177,17 +175,20 @@ public class    ProductService {
         if(id <= 0){
             return null;
         }
-        return  productService.findById(id);
+        return  productRepository.findById(id);
+    }
+    public Product getProductBySlug(String slug){
+        return productRepository.findBySlug(slug);
     }
 
-    public List<Product> getRelatedProducts(List<Category> categories, int currentProductId){
+    public List<Product> getRelatedProducts(List<Category> categories, int currentProductId, int limit){
         // Chuyển đổi List<Category> thành List<Integer> (danh sách ID của Category)
         List<Integer> categoryIds = categories.stream()
                 .map(Category::getId)
                 .collect(Collectors.toList());
 
         // Gọi phương thức trong repository với danh sách categoryIds
-        return productService.findRelatedProducts(categoryIds, currentProductId);
+        return productRepository.findRelatedProducts(categoryIds, currentProductId, limit);
     }
 
 
