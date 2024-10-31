@@ -20,7 +20,7 @@ public interface  ProductRepository extends JpaRepository<Product, Integer>{
     List<Product> findAllByCategories_Id(@Param("categoryIds") List<Integer> categoryIds);
 
 //    List<Product> getAll()
-@Query(value = """
+    @Query(value = """
         WITH top_discount_products AS (
             SELECT p.* 
             FROM products p 
@@ -35,7 +35,7 @@ public interface  ProductRepository extends JpaRepository<Product, Integer>{
             SELECT * 
             FROM top_discount_products 
             ORDER BY RAND() 
-            LIMIT 6
+            LIMIT :limit
         ),
         remaining_products AS (
             SELECT p.* 
@@ -45,12 +45,17 @@ public interface  ProductRepository extends JpaRepository<Product, Integer>{
             )
             AND p.id != :currentProductId  -- Loại trừ sản phẩm hiện tại trong remaining
             ORDER BY RAND() 
-            LIMIT 6
+            LIMIT :limit
         )
         SELECT * FROM random_top_discount
         UNION ALL 
         SELECT * FROM remaining_products
-        LIMIT 6;
+        LIMIT :limit;
         """, nativeQuery = true)
-List<Product> findRelatedProducts(@Param("categoryIds") List<Integer> categoryId, @Param("currentProductId") int currentProductI);
+    List<Product> findRelatedProducts(@Param("categoryIds") List<Integer> categoryId, @Param("currentProductId") int currentProductId, @Param("limit") int limit);
+
+    //getproductBy Slug
+    Product findBySlug(String slug);
+
+
 }

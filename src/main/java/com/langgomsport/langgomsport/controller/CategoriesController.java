@@ -4,10 +4,7 @@ import com.langgomsport.langgomsport.dtos.CategoryDTO;
 import com.langgomsport.langgomsport.models.Category;
 import com.langgomsport.langgomsport.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,5 +30,9 @@ public class CategoriesController {
         return categoryService.getAllCategoriesWithoutParent();
     }
 
+    @GetMapping("/")
+    public Category getCategoryById(@RequestParam int id) {
+        return categoryService.getCategoryById(id);
+    }
 
 }

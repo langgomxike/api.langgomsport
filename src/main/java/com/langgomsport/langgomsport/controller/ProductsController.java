@@ -9,6 +9,8 @@ import com.langgomsport.langgomsport.dtos.ProductDTO;
 import com.langgomsport.langgomsport.dtos.ResponseProductDetail;
 import com.langgomsport.langgomsport.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +27,7 @@ public class ProductsController {
     private ProductService productService;
 
     @GetMapping
-    public GetAllProductDTO getAllProducts(
+    public ResponseEntity<GetAllProductDTO> getAllProducts(
             @RequestParam(required = false) Integer categoryId,
             @RequestParam(required = false) List<Integer> sizeIds,
             @RequestParam(required = false) List<Integer> brandIds,
@@ -43,24 +45,33 @@ public class ProductsController {
 
         Pagination pagination = productService.getPagination(categoryId, sizeIds, brandIds, minPrice, maxPrice, sort, page, perPage);
 
-        return new GetAllProductDTO(products, pagination);
+        return ResponseEntity.ok( new GetAllProductDTO(products, pagination));
     }
 
     @GetMapping("/detail")
-    public ResponseProductDetail getProductDetail(
-            @RequestParam Integer id
+    public ResponseEntity<ResponseProductDetail> getProductDetail(
+            @RequestParam(required = false) Integer id,
+            @RequestParam(required = false) String slug,
+            @RequestParam(defaultValue = "6") Integer limit
     ){
-        Product product = productService.getProductById(id);
+        Product product = new Product();
+        if(id != null){
+            product = productService.getProductById(id);
+        } else if (slug != null) {
+            product = productService.getProductBySlug(slug);
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
         List<Category> categories =  product.getCategories();
-        List<Product> relatedProducts = productService.getRelatedProducts(categories, id);
+        List<Product> relatedProducts = productService.getRelatedProducts(categories, product.getId(), limit);
 
-        return new ResponseProductDetail(product, relatedProducts);
+        return ResponseEntity.ok(new ResponseProductDetail(product, relatedProducts));
     }
 
     //demo function
 
     @GetMapping("/demo")
-    public List<Product> getDemoProduct(
+    public ResponseEntity<List<Product>> getDemoProduct(
             @RequestParam(required = false) Integer categoryId,
             @RequestParam(required = false) List<Integer> sizeIds,
             @RequestParam(required = false) List<Integer> brandIds,
@@ -70,7 +81,8 @@ public class ProductsController {
             @RequestParam(defaultValue = "0") int offset,
             @RequestParam(defaultValue = "20") int limit
     ) {
-        return productService.getAllProducts(categoryId, sizeIds, brandIds, minPrice, maxPrice, sort, offset, limit);
+        List<Product> products = productService.getAllProducts(categoryId, sizeIds, brandIds, minPrice, maxPrice, sort, offset, limit);
+        return ResponseEntity.ok(products);
     }
 
     @GetMapping("/demo/page")

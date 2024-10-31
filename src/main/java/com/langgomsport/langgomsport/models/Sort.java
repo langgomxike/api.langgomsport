@@ -1,11 +1,9 @@
 package com.langgomsport.langgomsport.models;
 
 public enum Sort {
-    PRICEASC("ASC", "price"),
-    PRICEDESC("DESC", "price"),
-    DISCOUNTASC("ASC", "discount"),
-    DISCOUNTDESC("DESC", "discount"),
-    DISCOUNT("ASC", "discount");
+    PRICEASC("ASC", "(p.price - (p.price * p.discount / 100))"),
+    PRICEDESC("DESC", "(p.price - (p.price * p.discount / 100))"),
+    DISCOUNT("DESC", "discount");
 
     private String sortType;
     private String sortBy;
