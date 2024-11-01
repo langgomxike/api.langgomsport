@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import com.langgomsport.langgomsport.service.ProductService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://127.0.0.1:3000")
 @RequestMapping("/api/products") // Đổi đường dẫn thành /api để phân biệt với view thông thường
 public class ProductsController {
 
