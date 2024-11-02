@@ -50,10 +50,10 @@ public class    ProductService {
             sql.append("AND b.id IN (:brandId) ");
         }
         if (minPrice != null) {
-            sql.append("AND p.price >= :minPrice ");
+            sql.append("AND (p.price - (p.price * p.discount / 100)) >= :minPrice ");
         }
         if (maxPrice != null) {
-            sql.append("AND p.price <= :maxPrice ");
+            sql.append("AND (p.price - (p.price * p.discount / 100)) <= :maxPrice ");
         }
 
         // Thêm sắp xếp dựa trên enum Sort
@@ -121,10 +121,10 @@ public class    ProductService {
             sql.append("AND b.id IN (:brandId) ");
         }
         if (minPrice != null) {
-            sql.append("AND p.price >= :minPrice ");
+            sql.append("AND (p.price - (p.price * p.discount / 100)) >= :minPrice ");
         }
         if (maxPrice != null) {
-            sql.append("AND p.price <= :maxPrice ");
+            sql.append("AND (p.price - (p.price * p.discount / 100)) <= :maxPrice ");
         }
 
         // Thêm sắp xếp dựa trên enum Sort
