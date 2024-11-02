@@ -39,4 +39,11 @@ public class CategoryService {
         }
         return categoriesDTO;
     }
+
+    //get category by id
+    public Category getCategoryById(int id) {
+        return categoryRepository.findCategoryById(id);
+    }
+
+
 }

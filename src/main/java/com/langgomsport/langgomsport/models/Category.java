@@ -1,5 +1,7 @@
 package com.langgomsport.langgomsport.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -15,7 +17,18 @@ public class Category {
     private int id;
 
     private String name;
-    private int parentId;
+    @ManyToOne
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JoinColumn(name = "parent_id")
+//    @JsonIgnore// ánh xạ với cột parent_id trong cơ sở dữ liệu
+    private Category parent;
+
+    //relationships
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Product> products = new ArrayList<>();
+
+//    private int parentId;
 
     public int getId() {
         return id;
@@ -33,18 +46,23 @@ public class Category {
         this.name = name;
     }
 
-    public int getParentId() {
-        return parentId;
+    public Category getParent() {
+        if (this.parent != null && this.parent.getId() != 0) {
+            return this.parent;
+        }
+        return null;  // Trả về null nếu parent_id = 0
     }
 
-    public void setParentId(int parentId) {
-        this.parentId = parentId;
+    public void setParent(Category parent) {
+        this.parent = parent;
     }
 
-    //relationships
-    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
-    private List<Product> products = new ArrayList<>();
+    public List<Product> getProducts() {
+        return products;
+    }
 
-
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
 
 }

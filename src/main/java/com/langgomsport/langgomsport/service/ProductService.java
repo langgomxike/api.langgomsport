@@ -1,8 +1,8 @@
 package com.langgomsport.langgomsport.service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.langgomsport.langgomsport.models.*;
 import jakarta.persistence.EntityManager;
@@ -13,35 +13,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.langgomsport.langgomsport.repository.ProductRepository;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
-public class ProductService {
+public class    ProductService {
     private static final Log log = LogFactory.getLog(ProductService.class);
     @Autowired
-    private ProductRepository productService;
+    private ProductRepository productRepository;
     @Autowired
     private EntityManager em ;
 
-//    //Get all product
-//    public List<Product> getAllProducts(){
-//        return productService.findAll();
-//    }
-
-
     //get All product with native query
 
-    public List<Product> getAllProducts(
-            Integer categoryId,
-            List<Integer> sizeIds,
-            List<Integer> brandIds,
-            BigDecimal minPrice,
-            BigDecimal maxPrice,
-            String sort,
-            int offset,
-            int limit
+    public List<Product> getAllProducts(Integer categoryId, List<Integer> sizeIds, List<Integer> brandIds, BigDecimal minPrice, BigDecimal maxPrice, String sort, int offset, int limit
     ){
-        StringBuilder sql = new StringBuilder("SELECT p.* FROM products p " +
+        StringBuilder sql = new StringBuilder("SELECT DISTINCT p.* FROM products p " +
                 "LEFT JOIN variants v ON p.id = v.product_id " +
                 "LEFT JOIN sizes s ON v.size_id = s.id " +
                 "LEFT JOIN brands b ON p.brand_id = b.id ");
@@ -65,10 +50,10 @@ public class ProductService {
             sql.append("AND b.id IN (:brandId) ");
         }
         if (minPrice != null) {
-            sql.append("AND p.price >= :minPrice ");
+            sql.append("AND (p.price - (p.price * p.discount / 100)) >= :minPrice ");
         }
         if (maxPrice != null) {
-            sql.append("AND p.price <= :maxPrice ");
+            sql.append("AND (p.price - (p.price * p.discount / 100)) <= :maxPrice ");
         }
 
         // Thêm sắp xếp dựa trên enum Sort
@@ -110,20 +95,12 @@ public class ProductService {
         return (List<Product>) query.getResultList();
     }
 
-    public Pagination getPagination(
-            Integer categoryId,
-            List<Integer> sizeIds,
-            List<Integer> brandIds,
-            BigDecimal minPrice,
-            BigDecimal maxPrice,
-            String sort,
-            int page,
-            int perPage
+    public Pagination getPagination(Integer categoryId, List<Integer> sizeIds, List<Integer> brandIds, BigDecimal minPrice, BigDecimal maxPrice, String sort, int page, int perPage
     ){
         int offset = (page - 1) * perPage;
 
         // Tính tổng số sản phẩm co bo loc để tính totalPages
-        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM products p " +
+        StringBuilder sql = new StringBuilder("SELECT COUNT(DISTINCT p.id) FROM products p " +
                 "LEFT JOIN variants v ON p.id = v.product_id " +
                 "LEFT JOIN sizes s ON v.size_id = s.id " +
                 "LEFT JOIN brands b ON p.brand_id = b.id ");
@@ -144,10 +121,10 @@ public class ProductService {
             sql.append("AND b.id IN (:brandId) ");
         }
         if (minPrice != null) {
-            sql.append("AND p.price >= :minPrice ");
+            sql.append("AND (p.price - (p.price * p.discount / 100)) >= :minPrice ");
         }
         if (maxPrice != null) {
-            sql.append("AND p.price <= :maxPrice ");
+            sql.append("AND (p.price - (p.price * p.discount / 100)) <= :maxPrice ");
         }
 
         // Thêm sắp xếp dựa trên enum Sort
@@ -194,30 +171,25 @@ public class ProductService {
 
     }
 
-    public List<File> getProductFiles(Product product) {
-        StringBuilder sql = new StringBuilder("select f.* from files f " +
-            "LEFT JOIN variant_file vf ON vf.file_id = f.id " +
-            "LEFT JOIN variants v ON vf.variant_id = v.id " +
-            "LEFT JOIN products p ON p.id = v.product_id " +
-            "WHERE p.id = :productId ");
-        Query query = em.createNativeQuery(sql.toString(), File.class);
-        query.setParameter("productId", product.getId());
-        return (List<File>) query.getResultList();
-    }
-
     public Product getProductById(int id){
         if(id <= 0){
             return null;
         }
-        return  productService.findById(id);
+        return  productRepository.findById(id);
+    }
+    public Product getProductBySlug(String slug){
+        return productRepository.findBySlug(slug);
     }
 
-    public List<Product> getRelatedProducts(List<Category> categories){
-        List<Integer> categoryIds = new ArrayList<Integer>();
-        for (Category category : categories) {
-            categoryIds.add(category.getId());
-        }
-        return productService.findAllByCategories_Id(categoryIds);
+    public List<Product> getRelatedProducts(List<Category> categories, int currentProductId, int limit){
+        // Chuyển đổi List<Category> thành List<Integer> (danh sách ID của Category)
+        List<Integer> categoryIds = categories.stream()
+                .map(Category::getId)
+                .collect(Collectors.toList());
+
+        // Gọi phương thức trong repository với danh sách categoryIds
+        return productRepository.findRelatedProducts(categoryIds, currentProductId, limit);
     }
+
 
 }
