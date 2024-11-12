@@ -1,9 +1,5 @@
 package com.langgomsport.langgomsport.models;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,10 +18,13 @@ public class Product {
     private int id;
     private String code;
     @Column(name = "vn_name")
-    private String vnName;
+    private String name;
     @Column(name = "en_name")
     private String enName;
+    @Column(name = "vn_description")
     private String description;
+    @Column(name = "en_description")
+    private String endescription;
     private BigDecimal price;
     private BigDecimal discount;
     @Column(name = "desc_price")

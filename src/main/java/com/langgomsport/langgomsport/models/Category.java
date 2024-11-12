@@ -23,7 +23,7 @@ public class Category {
     private int id;
 
     @Column(name = "vn_name")
-    private String vnName;
+    private String name;
 
     @Column(name = "en_name")
     private String enName;
