@@ -1,4 +1,4 @@
-package com.langgomsport.langgomsport.dtos;
+package com.langgomsport.langgomsport.dtos.ResponseDTO;
 
 import com.langgomsport.langgomsport.models.Category;
 

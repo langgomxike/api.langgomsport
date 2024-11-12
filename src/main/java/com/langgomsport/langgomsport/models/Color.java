@@ -1,11 +1,17 @@
 package com.langgomsport.langgomsport.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @Table(name = "colors")
+@Data
+@Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Color {
     //properties
     @Id
@@ -14,31 +20,9 @@ public class Color {
     private String color;
     private String name;
 
-    //getter and setter
-    public int getId() {
-        return id;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getColor() {
-        return color;
-    }
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-
-
     //relationships
     @OneToMany(mappedBy = "color", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Variant> variants;
 
 

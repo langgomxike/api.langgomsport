@@ -1,6 +1,5 @@
 package com.langgomsport.langgomsport.service;
 
-import com.langgomsport.langgomsport.dtos.BrandDTO;
 import com.langgomsport.langgomsport.models.Brand;
 import com.langgomsport.langgomsport.models.Product;
 import com.langgomsport.langgomsport.repository.BrandRepository;
@@ -18,12 +17,12 @@ public class BrandService {
     @Autowired
     private ProductRepository productRepository;
 
-    public List<BrandDTO> getAllBrands() {
+    public List<Brand> getAllBrands() {
         // Lấy tất cả thương hiệu từ cơ sở dữ liệu
         List<Brand> brands = brandRepository.findAll();
 
         // Chuyển đổi từ Brand sang BrandDTO
-        return brands.stream().map(brand -> new BrandDTO(brand.getId(), brand.getName())).collect(Collectors.toList());
+        return brands;
     }
 
     // lấy sản phầm từ id thương hiệu

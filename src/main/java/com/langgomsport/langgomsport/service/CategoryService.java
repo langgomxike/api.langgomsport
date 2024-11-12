@@ -1,6 +1,6 @@
 package com.langgomsport.langgomsport.service;
 
-import com.langgomsport.langgomsport.dtos.CategoryDTO;
+import com.langgomsport.langgomsport.dtos.ResponseDTO.CategoryDTO;
 import com.langgomsport.langgomsport.models.Category;
 import com.langgomsport.langgomsport.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;

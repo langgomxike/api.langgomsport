@@ -1,11 +1,17 @@
 package com.langgomsport.langgomsport.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @Table(name = "sizes")
+@Data
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Size {
     //properties
     @Id
@@ -13,25 +19,9 @@ public class Size {
     private int id;
     private String size;
 
-    //getter and setter
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getSize() {
-        return size;
-    }
-
-    public void setSize(String name) {
-        this.size = name;
-    }
-
     //relationships
     @OneToMany(mappedBy = "size", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Variant> variants;
 
 }
