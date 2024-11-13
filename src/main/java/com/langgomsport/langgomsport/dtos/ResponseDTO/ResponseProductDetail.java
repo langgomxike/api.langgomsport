@@ -10,6 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 public class ResponseProductDetail {
     //properties
-    private ProductDTO productDTO;
+    private ProductDTO detail;
     private List<ProductDTO> related_products;
 }

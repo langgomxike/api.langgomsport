@@ -15,12 +15,12 @@ public class VariantImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String vn_name;
-    private String en_name;
+    private String name;
+    private String enName;
     private String path;
     private int capacity;
-    private long created_at;
-    private long updated_at;
+    private long createdAt;
+    private long updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "variant_id")
