@@ -9,8 +9,10 @@ import com.langgomsport.langgomsport.dtos.ResponseDTO.ResponseCartDTO;
 import com.langgomsport.langgomsport.dtos.ResponseDTO.ResponseOrderDTO;
 import com.langgomsport.langgomsport.models.Order;
 import com.langgomsport.langgomsport.models.OrderVariant;
+import com.langgomsport.langgomsport.models.Variant;
 import com.langgomsport.langgomsport.service.OrderService;
 import com.langgomsport.langgomsport.service.OrderVariantService;
+import com.langgomsport.langgomsport.service.VariantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,8 @@ public class CartsController {
     private OrderService orderService;
     @Autowired
     private OrderVariantService orderVariantService;
+    @Autowired
+    private VariantService variantService;
 
     @RequestMapping
     public ResponseEntity<ResponseCartDTO> getOrderById(@RequestParam String id) {
@@ -102,6 +106,14 @@ public class CartsController {
         } catch (Exception e) {
             return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseOrderDTO("can't Order", null));
         }
+    }
+
+    @GetMapping("/variants")
+    public ResponseEntity<List<Variant>> getVariantsByIds(
+            @RequestParam List<Integer> ids
+    ){
+        List<Variant> variants = variantService.getAllVariantsByIds(ids);
+        return ResponseEntity.ok().body(variants);
     }
 
 }
