@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://127.0.0.1:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("api/carts")
 public class CartsController {
     @Autowired
