@@ -24,10 +24,10 @@ public class Order {
 
     @Column(name = "phone_number")
     private String phoneNumber;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "status")
-    private Status status;
+//
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "status")
+//    private Status status;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
