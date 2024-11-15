@@ -8,7 +8,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RequestMultiOrder {
-    private String orderId;
     private String fullName;
     private String phoneNumber;
     private List<RequestMultiOrderVariant> orderVariants;
