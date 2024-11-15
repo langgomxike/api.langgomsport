@@ -27,27 +27,27 @@ public class OrderService {
 
         order.setFullName(fullName);
         order.setPhoneNumber(phoneNumber);
-        order.setStatus(status);
+//        order.setStatus(status);
         return orderRepository.save(order);
     }
 
     public Order createOrder(){
         Order order = new Order();
-        Status status = statusRepository.findById(1).get();
-        order.setStatus(status);
+//        Status status = statusRepository.findById(1).get();
+//        order.setStatus(status);
         return orderRepository.save(order);
     }
 
-    public Order changeStatus(String orderId, int statusId) {
-        Optional<Order> order = orderRepository.findById(orderId);
-        Status status = statusRepository.findById(statusId).orElseThrow(()-> new RuntimeException("status not found"));
-        if(order.isPresent()){
-            order.get().setStatus(status);
-            return orderRepository.save(order.get());
-        }else{
-            return null;
-        }
-    }
+//    public Order changeStatus(String orderId, int statusId) {
+//        Optional<Order> order = orderRepository.findById(orderId);
+//        Status status = statusRepository.findById(statusId).orElseThrow(()-> new RuntimeException("status not found"));
+//        if(order.isPresent()){
+//            order.get().setStatus(status);
+//            return orderRepository.save(order.get());
+//        }else{
+//            return null;
+//        }
+//    }
 
     public void delete(String orderId) {
         Optional<Order> order = orderRepository.findById(orderId);
@@ -62,8 +62,8 @@ public class OrderService {
         Order order = new Order();
         order.setFullName(fullName);
         order.setPhoneNumber(phoneNumber);
-        Status status = statusRepository.findById(2).get();
-        order.setStatus(status);
+//        Status status = statusRepository.findById(2).get();
+//        order.setStatus(status);
         return orderRepository.save(order);
     }
 
