@@ -1,6 +1,8 @@
 package com.langgomsport.langgomsport.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,7 +29,7 @@ public class Variant {
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
-    @JsonIgnore
+    @JsonIgnoreProperties("variants")
     private Product product;
 
     @ManyToOne

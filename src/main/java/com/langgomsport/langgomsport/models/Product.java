@@ -1,5 +1,7 @@
 package com.langgomsport.langgomsport.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,8 +38,8 @@ public class Product {
     private long updatedAt;
 
     //relationship
-//    @JsonIgnore
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("product")
     private List<Variant> variants;
 
     @ManyToMany(fetch = FetchType.LAZY)

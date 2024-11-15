@@ -1,16 +1,16 @@
 package com.langgomsport.langgomsport.controller;
 
 
-import com.langgomsport.langgomsport.dtos.RequestDTO.RequestOrderDTO;
-import com.langgomsport.langgomsport.dtos.RequestDTO.RequestOrderVariantDTO;
-import com.langgomsport.langgomsport.dtos.RequestDTO.RequestUpdateOrderVariantDTO;
+import com.langgomsport.langgomsport.dtos.RequestDTO.*;
 import com.langgomsport.langgomsport.dtos.ResponseDTO.ResponseCartCountDTO;
 import com.langgomsport.langgomsport.dtos.ResponseDTO.ResponseCartDTO;
 import com.langgomsport.langgomsport.dtos.ResponseDTO.ResponseOrderDTO;
 import com.langgomsport.langgomsport.models.Order;
 import com.langgomsport.langgomsport.models.OrderVariant;
+import com.langgomsport.langgomsport.models.Variant;
 import com.langgomsport.langgomsport.service.OrderService;
 import com.langgomsport.langgomsport.service.OrderVariantService;
+import com.langgomsport.langgomsport.service.VariantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +27,8 @@ public class CartsController {
     private OrderService orderService;
     @Autowired
     private OrderVariantService orderVariantService;
+    @Autowired
+    private VariantService variantService;
 
     @RequestMapping
     public ResponseEntity<ResponseCartDTO> getOrderById(@RequestParam String id) {
@@ -70,7 +72,7 @@ public class CartsController {
             @PathVariable String orderId,
             @RequestBody RequestUpdateOrderVariantDTO requestUpdateOrderVariantDTO){
         try {
-            orderVariantService.updteOrderVariant(
+            orderVariantService.updateOrderVariant(
                     orderId,
                     requestUpdateOrderVariantDTO.getVariantId(),
                     requestUpdateOrderVariantDTO.getQuantity());
@@ -97,6 +99,33 @@ public class CartsController {
                     requestOrderDTO.getOrderId(),
                     requestOrderDTO.getFullName(),
                     requestOrderDTO.getPhoneNumber());
+
+            return ResponseEntity.ok(new ResponseOrderDTO("order successfully", order));
+        } catch (Exception e) {
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseOrderDTO("can't Order", null));
+        }
+    }
+
+    @GetMapping("/variants")
+    public ResponseEntity<List<Variant>> getVariantsByIds(
+            @RequestParam List<Integer> ids
+    ){
+        List<Variant> variants = variantService.getAllVariantsByIds(ids);
+        return ResponseEntity.ok().body(variants);
+    }
+
+    @PostMapping("/multi-order")
+    public ResponseEntity<ResponseOrderDTO> multiOrder(
+            @RequestBody RequestMultiOrder requestMultiOrder
+    ){
+        //add orderVariant
+        List<OrderVariant> orderVariants = orderVariantService.saveOrderVariants(requestMultiOrder.getOrderId(), requestMultiOrder.getOrderVariants());
+        //create order
+        try {
+            Order order = orderService.order(
+                    requestMultiOrder.getOrderId(),
+                    requestMultiOrder.getFullName(),
+                    requestMultiOrder.getPhoneNumber());
 
             return ResponseEntity.ok(new ResponseOrderDTO("order successfully", order));
         } catch (Exception e) {

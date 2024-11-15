@@ -1,5 +1,6 @@
 package com.langgomsport.langgomsport.service;
 
+import com.langgomsport.langgomsport.dtos.RequestDTO.RequestMultiOrderVariant;
 import com.langgomsport.langgomsport.models.Order;
 import com.langgomsport.langgomsport.models.OrderVariant;
 import com.langgomsport.langgomsport.models.Variant;
@@ -8,10 +9,10 @@ import com.langgomsport.langgomsport.repository.OrderRepository;
 import com.langgomsport.langgomsport.repository.OrderVariantRepository;
 import com.langgomsport.langgomsport.repository.VariantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -45,7 +46,7 @@ public class OrderVariantService {
         orderVariantRepository.deleteById(id);
     }
 
-    public OrderVariant updteOrderVariant(String orderId, int variantId, int quantity) {
+    public OrderVariant updateOrderVariant(String orderId, int variantId, int quantity) {
         OrderVariantId orderVariantId = new OrderVariantId(orderId, variantId);
         OrderVariant orderVariant = orderVariantRepository.findById(orderVariantId)
                 .orElseThrow(()-> new RuntimeException("cart item not found!"));
@@ -76,6 +77,24 @@ public class OrderVariantService {
             total = total.add(priceItem);
         }
         return total;
+    }
+
+    public List<OrderVariant> saveOrderVariants(String orderId, List<RequestMultiOrderVariant> orderVariants) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(()-> new RuntimeException("order not found!"));
+        List<OrderVariant> result = new ArrayList<>();
+        for(RequestMultiOrderVariant requestMultiOrderVariant : orderVariants) {
+            Variant variant = variantRepository.findById(requestMultiOrderVariant.getVariantId())
+                    .orElseThrow(()-> new RuntimeException("variant not found!"));
+            OrderVariantId orderVariantId = new OrderVariantId(orderId, variant.getId());
+            OrderVariant orderVariant = new OrderVariant();
+            orderVariant.setId(orderVariantId);
+            orderVariant.setOrder(order);
+            orderVariant.setVariant(variant);
+            orderVariant.setQuantity(requestMultiOrderVariant.getQuantity());
+            result.add(orderVariantRepository.save(orderVariant));
+        }
+        return result;
     }
 
 }
