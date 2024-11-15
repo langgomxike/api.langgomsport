@@ -118,19 +118,11 @@ public class CartsController {
     public ResponseEntity<ResponseOrderDTO> multiOrder(
             @RequestBody RequestMultiOrder requestMultiOrder
     ){
+        Order order = orderService.save(requestMultiOrder.getFullName(), requestMultiOrder.getPhoneNumber());
         //add orderVariant
-        List<OrderVariant> orderVariants = orderVariantService.saveOrderVariants(requestMultiOrder.getOrderId(), requestMultiOrder.getOrderVariants());
+        List<OrderVariant> orderVariants = orderVariantService.saveOrderVariants(order.getId(), requestMultiOrder.getOrderVariants());
         //create order
-        try {
-            Order order = orderService.order(
-                    requestMultiOrder.getOrderId(),
-                    requestMultiOrder.getFullName(),
-                    requestMultiOrder.getPhoneNumber());
-
-            return ResponseEntity.ok(new ResponseOrderDTO("order successfully", order));
-        } catch (Exception e) {
-            return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseOrderDTO("can't Order", null));
-        }
+        return ResponseEntity.ok(new ResponseOrderDTO("order successfully", order));
     }
 
 }

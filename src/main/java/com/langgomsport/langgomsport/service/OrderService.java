@@ -58,4 +58,13 @@ public class OrderService {
         return orderRepository.findById(orderId).get();
     }
 
+    public Order save(String fullName, String phoneNumber){
+        Order order = new Order();
+        order.setFullName(fullName);
+        order.setPhoneNumber(phoneNumber);
+        Status status = statusRepository.findById(2).get();
+        order.setStatus(status);
+        return orderRepository.save(order);
+    }
+
 }
