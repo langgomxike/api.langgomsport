@@ -1,24 +1,27 @@
 package com.langgomsport.langgomsport.service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.langgomsport.langgomsport.dtos.ResponseDTO.ProductDTO;
 import com.langgomsport.langgomsport.models.*;
+import com.langgomsport.langgomsport.repository.VariantImageRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.langgomsport.langgomsport.repository.ProductRepository;
 
 @Service
-public class    ProductService {
-    private static final Log log = LogFactory.getLog(ProductService.class);
+public class ProductService {
+
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private VariantImageRepository variantImageRepository;
     @Autowired
     private EntityManager em ;
 
@@ -181,15 +184,24 @@ public class    ProductService {
         return productRepository.findBySlug(slug);
     }
 
-    public List<Product> getRelatedProducts(List<Category> categories, int currentProductId, int limit){
+    public List<ProductDTO> getRelatedProducts(List<Category> categories, int currentProductId, int limit){
         // Chuyển đổi List<Category> thành List<Integer> (danh sách ID của Category)
         List<Integer> categoryIds = categories.stream()
                 .map(Category::getId)
                 .collect(Collectors.toList());
 
         // Gọi phương thức trong repository với danh sách categoryIds
-        return productRepository.findRelatedProducts(categoryIds, currentProductId, limit);
+        List<Product> products =  productRepository.findRelatedProducts(categoryIds, currentProductId, limit);
+        List<ProductDTO> productsResponse = new ArrayList<>();
+        for(Product product : products){
+            List<VariantImage> images = getImagesProducts(product);
+            ProductDTO productDTO = new ProductDTO(product, images);
+            productsResponse.add(productDTO);
+        }
+        return productsResponse;
     }
 
-
+    public List<VariantImage> getImagesProducts(Product product){
+        return variantImageRepository.findAllByProductId(product.getId());
+    }
 }

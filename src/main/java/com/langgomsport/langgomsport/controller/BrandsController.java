@@ -1,6 +1,6 @@
 package com.langgomsport.langgomsport.controller;
 
-import com.langgomsport.langgomsport.dtos.BrandDTO;
+import com.langgomsport.langgomsport.models.Brand;
 import com.langgomsport.langgomsport.models.Product;
 import com.langgomsport.langgomsport.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class BrandsController {
     private BrandService brandService;
 
     @GetMapping
-    public List<BrandDTO> getAllBrands() {
+    public List<Brand> getAllBrands() {
         return brandService.getAllBrands();
     }
 

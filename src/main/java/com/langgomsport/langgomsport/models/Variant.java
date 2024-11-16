@@ -1,25 +1,35 @@
 package com.langgomsport.langgomsport.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "variants")
+@Data
+@Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Variant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int quantity;
-    private long created_at;
-    private long updated_at;
+    private BigDecimal price;
 
+    @Column(name= "created_at")
+    private long createdAt;
+    @Column(name= "updated_at")
+    private long updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
-    @JsonIgnore
+    @JsonIgnoreProperties("variants")
     private Product product;
 
     @ManyToOne
@@ -30,70 +40,8 @@ public class Variant {
     @JoinColumn(name = "size_id", nullable = false)
     private Size size;
 
-    //getter and setter
+    @OneToMany(mappedBy = "variant")
+    private List<VariantImage> images;
 
-    public int getId() {
-        return id;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
 
-    public int getQuantity() {
-        return quantity;
-    }
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public long getCreated_at() {
-        return created_at;
-    }
-    public void setCreated_at(long created_at) {
-        this.created_at = created_at;
-    }
-
-    public long getUpdated_at() {
-        return updated_at;
-    }
-    public void setUpdated_at(long updated_at) {
-        this.updated_at = updated_at;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    public Size getSize() {
-        return size;
-    }
-
-    public void setSize(Size size) {
-        this.size = size;
-    }
-
-    //constructor
-
-    public Variant(int id, int quantity, long created_at, long updated_at, Product product, Color color, Size size) {
-        this.id = id;
-        this.quantity = quantity;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
-        this.product = product;
-        this.color = color;
-        this.size = size;
-    }
-
-    public Variant() {
-    }
 }
