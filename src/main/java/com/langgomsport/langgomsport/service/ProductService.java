@@ -53,10 +53,10 @@ public class ProductService {
             sql.append("AND b.id IN (:brandId) ");
         }
         if (minPrice != null) {
-            sql.append("AND (p.price - (p.price * p.discount / 100)) >= :minPrice ");
+            sql.append("AND p.desc_price >= :minPrice ");
         }
         if (maxPrice != null) {
-            sql.append("AND (p.price - (p.price * p.discount / 100)) <= :maxPrice ");
+            sql.append("AND p.desc_price <= :maxPrice ");
         }
 
         // Thêm sắp xếp dựa trên enum Sort
@@ -204,4 +204,58 @@ public class ProductService {
     public List<VariantImage> getImagesProducts(Product product){
         return variantImageRepository.findAllByProductId(product.getId());
     }
+
+    public BigDecimal getHighestPrice(Integer categoryId, List<Integer> sizeIds, List<Integer> brandIds, String sort){
+        StringBuilder sql = new StringBuilder("SELECT MAX(p.desc_price) FROM products p " +
+                "LEFT JOIN variants v ON p.id = v.product_id " +
+                "LEFT JOIN sizes s ON v.size_id = s.id " +
+                "LEFT JOIN brands b ON p.brand_id = b.id ");
+
+        // Xử lý tham số categoryId
+        if (categoryId != null) {
+            sql.append("JOIN products_in_categories pc ON p.id = pc.product_id ");
+            sql.append("JOIN categories c ON pc.category_id = c.id ");
+        }
+
+        // Thêm điều kiện WHERE nếu có tham số nào khác
+        sql.append("WHERE 1=1   ");
+        if (categoryId != null) {
+            sql.append("AND c.id = :categoryId ");
+        }
+        //kiem tra size
+        if (sizeIds != null) {
+            sql.append("AND s.id IN (:sizeId) ");
+        }
+        if (brandIds != null) {
+            sql.append("AND b.id IN (:brandId) ");
+        }
+        // Thêm sắp xếp dựa trên enum Sort
+        Sort sort1 = Sort.fromString(sort);
+        // bo qua cac discount = 0
+        if(sort1.getSortBy().equals("discount")){
+            sql.append("AND p.discount > 0 ");
+        }
+        //sap xep
+        sql.append("ORDER BY ")
+                .append(sort1.getSortBy())
+                .append(" ")
+                .append(sort1.getSortType())
+                .append(" ");
+
+        Query query = em.createNativeQuery(sql.toString());
+
+        if (categoryId != null) {
+            query.setParameter("categoryId", categoryId);
+        }
+        if (sizeIds != null) {
+            query.setParameter("sizeId", sizeIds); //mang size
+        }
+        if (brandIds != null) {
+            query.setParameter("brandId", brandIds); // mang brand
+        }
+
+        Object result = query.getSingleResult();
+        return result != null ? (BigDecimal) result : BigDecimal.ZERO;
+    }
+
 }

@@ -19,3 +19,7 @@ spring:
     locations: classpath:db/migrations
     baseline-on-migrate: true
     validate-on-migrate: true
+  data:
+    redis:
+      host: redis
+      port: 6379
