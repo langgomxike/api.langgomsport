@@ -1,11 +1,11 @@
 spring:
   application:
-    name: langgomsport
+    name: ${DATABASE_NAME}
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/langgomsport?createDatabaseIfNotExist=true
-    username: root
-    password:
+    url: jdbc:mysql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}?createDatabaseIfNotExist=true
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
   jpa:
     show-sql: true
     hibernate:
