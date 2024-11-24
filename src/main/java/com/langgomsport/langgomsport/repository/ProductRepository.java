@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.langgomsport.langgomsport.models.Product;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -53,8 +54,14 @@ public interface  ProductRepository extends JpaRepository<Product, Integer>{
         """, nativeQuery = true)
     List<Product> findRelatedProducts(@Param("categoryIds") List<Integer> categoryId, @Param("currentProductId") int currentProductId, @Param("limit") int limit);
 
-    //getproductBy Slug
+    //getproductBySlug
     Product findBySlug(String slug);
 
+    //getHighestPriceProducts
+    @Query("SELECT p.descPrice FROM Product p " +
+            "WHERE p.descPrice = (" +
+            "    SELECT MAX(p2.descPrice)" +
+            "    FROM Product p2) ")
+    BigDecimal getProductByMaxDescPrice();
 
 }

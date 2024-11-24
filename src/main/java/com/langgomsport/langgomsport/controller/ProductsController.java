@@ -52,7 +52,9 @@ public class ProductsController {
 
         Pagination pagination = productService.getPagination(categoryId, sizeIds, brandIds, minPrice, maxPrice, sort, page, perPage);
 
-        return ResponseEntity.ok( new GetAllProductDTO(productResponse, pagination));
+        //lay san pham co gia cao nhat
+        BigDecimal highestProduct = productService.getHighestPrice(categoryId, sizeIds, brandIds, sort);
+        return ResponseEntity.ok( new GetAllProductDTO(productResponse, pagination, highestProduct));
     }
 
     @GetMapping("/detail")
