@@ -18,7 +18,10 @@ public class Color {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String color;
+    @Column(name = "vn_name")
     private String name;
+    @Column(name = "en_name")
+    private String enName;
 
     //relationships
     @OneToMany(mappedBy = "color", fetch = FetchType.LAZY)

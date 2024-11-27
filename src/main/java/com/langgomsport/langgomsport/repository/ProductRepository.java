@@ -1,5 +1,6 @@
 package com.langgomsport.langgomsport.repository;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -58,11 +59,12 @@ public interface  ProductRepository extends JpaRepository<Product, Integer>{
     //getproductBySlug
     Product findBySlug(String slug);
 
-    //getHighestPriceProducts
-    @Query("SELECT p.descPrice FROM Product p " +
-            "WHERE p.descPrice = (" +
-            "    SELECT MAX(p2.descPrice)" +
-            "    FROM Product p2) ")
-    BigDecimal getProductByMaxDescPrice();
+    //getSaleOffProductInHome
+    List<Product> findAllByDiscountGreaterThanOrderByDiscountDesc(BigDecimal discount, Pageable pageable);
+
+    //getNewestProductInHome
+    List<Product> findAllByOrderByCreatedAtDesc(Pageable pageable);
+
+
 
 }

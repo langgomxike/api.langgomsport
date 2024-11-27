@@ -1,5 +1,6 @@
 package com.langgomsport.langgomsport.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -53,5 +54,10 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "brand_id", nullable = false)
     private Brand brand;
+
+//    @ManyToMany(mappedBy = "products")
+//    @JsonIgnore
+//    private List<Collection> collections;
+
 
 }

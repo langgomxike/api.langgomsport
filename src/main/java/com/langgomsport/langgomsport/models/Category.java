@@ -27,6 +27,7 @@ public class Category {
 
     @Column(name = "en_name")
     private String enName;
+    private String slug;
 
     @ManyToOne
     @JsonInclude(JsonInclude.Include.NON_NULL)
