@@ -11,6 +11,8 @@ import com.langgomsport.langgomsport.repository.VariantImageRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.langgomsport.langgomsport.repository.ProductRepository;
@@ -258,4 +260,13 @@ public class ProductService {
         return result != null ? (BigDecimal) result : BigDecimal.ZERO;
     }
 
+    public List<Product> getProductDiscountInHome(int limit) {
+        Pageable pageable = PageRequest.of(0, limit);
+        return productRepository.findAllByDiscountGreaterThanOrderByDiscountDesc(BigDecimal.ZERO, pageable);
+    }
+
+    public List<Product> getNewestProductInHome(int limit){
+        Pageable pageable = PageRequest.of(0, limit);
+        return productRepository.findAllByOrderByCreatedAtDesc(pageable);
+    }
 }

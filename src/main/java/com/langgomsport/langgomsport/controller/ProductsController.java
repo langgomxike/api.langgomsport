@@ -99,5 +99,33 @@ public class ProductsController {
         return productService.getPagination(categoryId, sizeIds, brandIds, minPrice, maxPrice, sort, page, perPage);
     }
 
+    @GetMapping("/sale-off")
+    public ResponseEntity<List<ProductDTO>> getSaleOffProducts(
+            @RequestParam (defaultValue = "4") int limit
+    ){
+        List<Product> products = productService.getProductDiscountInHome(limit);
+        List<ProductDTO> productResponse = new ArrayList<>();
+        for(Product product : products) {
+            List<VariantImage> images = productService.getImagesProducts(product);
+            ProductDTO productDTO = new ProductDTO(product, images);
+            productResponse.add(productDTO);
+        }
+        return ResponseEntity.ok(productResponse);
+    }
+    @GetMapping("/newest")
+    public ResponseEntity<List<ProductDTO>> getNewestProducts(
+            @RequestParam (defaultValue = "4") int limit
+    ){
+        List<Product> products = productService.getNewestProductInHome(limit);
+        List<ProductDTO> productResponse = new ArrayList<>();
+        for(Product product : products) {
+            List<VariantImage> images = productService.getImagesProducts(product);
+            ProductDTO productDTO = new ProductDTO(product, images);
+            productResponse.add(productDTO);
+        }
+
+        return ResponseEntity.ok(productResponse);
+    }
+
 }
 
