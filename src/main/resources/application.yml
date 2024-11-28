@@ -1,11 +1,11 @@
 spring:
   application:
-    name: ${DATABASE_NAME}
+    name: langgomsport
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}?createDatabaseIfNotExist=true
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
+    url: jdbc:mysql://localhost:3306/langgomsport?createDatabaseIfNotExist=true
+    username: root
+    password:
   jpa:
     show-sql: true
     hibernate:
@@ -19,7 +19,3 @@ spring:
     locations: classpath:db/migrations
     baseline-on-migrate: true
     validate-on-migrate: true
-  data:
-    redis:
-      host: redis
-      port: 6379
