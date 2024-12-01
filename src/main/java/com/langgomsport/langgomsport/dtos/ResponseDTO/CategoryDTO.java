@@ -1,29 +1,19 @@
 package com.langgomsport.langgomsport.dtos.ResponseDTO;
 
 import com.langgomsport.langgomsport.models.Category;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Setter
+@Getter
 public class CategoryDTO {
+    //getter and setter
     //properties
     private Category categoryParent;
     private List<Category> categories;
-
-    //getter and setter
-    public Category getCategoryParent() {
-        return categoryParent;
-    }
-    public void setCategoryParent(Category categoryParent) {
-        this.categoryParent = categoryParent;
-    }
-
-    public List<Category> getCategories() {
-        return categories;
-    }
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
-    }
 
     //constructor
 
