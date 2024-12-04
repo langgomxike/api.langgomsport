@@ -3,9 +3,9 @@ spring:
     name: langgomsport
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/langgomsport?createDatabaseIfNotExist=true
-    username: root
-    password:
+    url: jdbc:mysql://${DATABASE_HOST:localhost}:${DATABASE_PORT:3306}/${DATABASE_NAME:langgomsport}?createDatabaseIfNotExist=true
+    username: ${DATABASE_USERNAME:root}
+    password: ${DATABASE_PASSWORD:}
   jpa:
     show-sql: true
     hibernate:
@@ -17,9 +17,12 @@ spring:
   flyway:
     enabled: false
     locations: classpath:db/migrations
-    baseline-on-migrate: true
-    validate-on-migrate: true
+    baseline-on-migrate: false
+    validate-on-migrate: false
+
   data:
     redis:
-      host: redis
-      port: 6379
+      host: ${SPRING_DATA_REDIS_HOST:redis}
+      port: ${SPRING_DATA_REDIS_PORT:6379}
+      repositories:
+        enabled: false

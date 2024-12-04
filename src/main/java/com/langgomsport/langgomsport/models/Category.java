@@ -27,6 +27,7 @@ public class Category {
 
     @Column(name = "en_name")
     private String enName;
+    @Column(length = 191)
     private String slug;
 
     @ManyToOne
