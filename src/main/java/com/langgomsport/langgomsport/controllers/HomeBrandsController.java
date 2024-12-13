@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000", "http://127.0.0.1:3000"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://127.0.0.1:3000", "http://fe-langgomsport-bucket.s3-website-ap-southeast-1.amazonaws.com"})
 @RequestMapping("/api/home-brands")
 public class HomeBrandsController {
     @Autowired

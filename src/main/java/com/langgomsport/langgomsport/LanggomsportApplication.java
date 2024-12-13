@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @EnableCaching
 public class LanggomsportApplication {
 
-	@CrossOrigin("http://127.0.0.1:3000")
+	@CrossOrigin( origins = {"http://127.0.0.1:3000", "http://fe-langgomsport-bucket.s3-website-ap-southeast-1.amazonaws.com"})
 	public static void main(String[] args) {
 		SpringApplication.run(LanggomsportApplication.class, args);
 	}

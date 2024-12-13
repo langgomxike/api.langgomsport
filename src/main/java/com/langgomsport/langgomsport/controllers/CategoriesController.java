@@ -10,7 +10,7 @@ import java.util.List;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "http://fe-langgomsport-bucket.s3-website-ap-southeast-1.amazonaws.com"})
 @RequestMapping("api/categories")
 public class CategoriesController {
     @Autowired

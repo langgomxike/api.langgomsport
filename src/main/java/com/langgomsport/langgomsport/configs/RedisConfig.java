@@ -1,5 +1,6 @@
 package com.langgomsport.langgomsport.configs;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -12,6 +13,9 @@ import redis.clients.jedis.JedisPoolConfig;
 @Configuration
 public class RedisConfig {
 
+    public static final String redisHost = "172.31.26.248";
+    public static final int redisPort = 6379;
+
     @Bean
     public JedisConnectionFactory jedisConnectionFactory() {
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
@@ -21,8 +25,8 @@ public class RedisConfig {
         jedisPoolConfig.setTestOnBorrow(true);
 
         JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(jedisPoolConfig);
-        jedisConnectionFactory.setHostName("localhost");
-        jedisConnectionFactory.setPort(6379);
+        jedisConnectionFactory.setHostName(redisHost);
+        jedisConnectionFactory.setPort(redisPort);
         return jedisConnectionFactory;
     }
 

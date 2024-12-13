@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/sizes")
-@CrossOrigin (origins = "http://localhost:3000")
+@CrossOrigin (origins = {"http://localhost:3000", "http://fe-langgomsport-bucket.s3-website-ap-southeast-1.amazonaws.com"})
 public class SizesController {
     @Autowired
     private SizeService sizeService;
