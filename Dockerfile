@@ -27,16 +27,17 @@ EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
 
 # build image and run container
-# docker build -t api_langgomsport .
+# docker build -t --platform linux/amd64 api_langgomsport .
+# docker buildx build --platform linux/amd64 -t api_langgomsport .
 # docker network create langgomsport_network
 # docker rm -f api_langgomsport
 # docker run --env-file .env --name api_langgomsport -p 8080:8080 --network langgomsport_network api_langgomsport
 
 # push image into docker hub
 # docker login
-# docker tag api_langgomsport khanhlv2004/api_langgomsport:2.0
+# docker tag api_langgomsport khanhlv2004/api_langgomsport:6.0
 # docker tag api_langgomsport khanhlv2004/api_langgomsport:latest
-# docker push khanhlv2004/api_langgomsport:2.0
+# docker push khanhlv2004/api_langgomsport:6.0
 # docker push khanhlv2004/api_langgomsport:latest
 
 #

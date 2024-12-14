@@ -3,9 +3,9 @@ spring:
     name: langgomsport
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${DATABASE_HOST:localhost}:${DATABASE_PORT:3306}/${DATABASE_NAME:langgomsport}?createDatabaseIfNotExist=true
-    username: ${DATABASE_USERNAME:root}
-    password: ${DATABASE_PASSWORD:}
+    url: jdbc:mysql://${DATABASE_HOST:172.31.26.248}:${DATABASE_PORT:3306}/${DATABASE_NAME:langgomsport}?createDatabaseIfNotExist=true
+    username: ${DATABASE_USERNAME:admin}
+    password: ${DATABASE_PASSWORD:123456}
   jpa:
     show-sql: true
     hibernate:
@@ -22,7 +22,7 @@ spring:
 
   data:
     redis:
-      host: ${SPRING_DATA_REDIS_HOST:redis}
+      host: ${SPRING_DATA_REDIS_HOST:172.31.26.248}
       port: ${SPRING_DATA_REDIS_PORT:6379}
       repositories:
         enabled: false
