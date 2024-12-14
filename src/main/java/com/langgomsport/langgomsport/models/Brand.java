@@ -20,6 +20,7 @@ public class Brand {
 
     private String name;
     private String image;
+    @Column(length = 191)
     private String slug;
 
     //relationships
